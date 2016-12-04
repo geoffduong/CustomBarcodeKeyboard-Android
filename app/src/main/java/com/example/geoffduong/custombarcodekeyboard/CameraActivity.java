@@ -35,25 +35,11 @@ public class CameraActivity extends Activity {
     public static Camera getCameraInstance(){
         Camera c = null;
         try {
-            c = Camera.open(); // attempt to get a Camera instance
+            c = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK); // attempt to get a Camera instance
         }
         catch (Exception e){
             // Camera is not available (in use or does not exist)
         }
         return c; // returns null if camera is unavailable
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        mCamera = Camera.open();
-//        mCamera.startPreview();
-        //mCamera.startPreview();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
     }
 }

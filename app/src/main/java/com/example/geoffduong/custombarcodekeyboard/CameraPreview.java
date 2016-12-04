@@ -3,9 +3,11 @@ package com.example.geoffduong.custombarcodekeyboard;
 import android.content.Context;
 import android.hardware.Camera;
 import android.util.Log;
+import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -17,6 +19,8 @@ import static android.content.ContentValues.TAG;
  */
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
+
+
     private SurfaceHolder mHolder;
     private Camera mCamera;
     private boolean inPreview=false;
@@ -72,6 +76,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // start preview with new settings
         try {
             mCamera.setPreviewDisplay(mHolder);
+            mCamera.setDisplayOrientation(90);
             mCamera.startPreview();
 
         } catch (Exception e){
