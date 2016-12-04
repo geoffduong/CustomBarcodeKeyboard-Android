@@ -45,5 +45,11 @@
         android:layout_gravity="center"
         android:text="Capture"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true" />
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:id="@+id/iv_picture"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>
