@@ -8,11 +8,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,6 +39,8 @@ public class CameraActivity extends Activity {
     Button btn_takePicture;
     TextView tv_hello;
     ImageView mImageView;
+    BarcodeDetector detector;
+    Camera.Parameters params;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,8 +52,14 @@ public class CameraActivity extends Activity {
         tv_hello = (TextView) findViewById(R.id.tv_Hello);
         mImageView = (ImageView) findViewById(R.id.iv_picture);
 
+
         // Create an instance of Camera
         mCamera = getCameraInstance();
+
+        //Set camera parameters
+        params = mCamera.getParameters();
+        params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        mCamera.setParameters(params);
 
         // Create our Preview view and set it as the content of our activity.
         mPreview = new CameraPreview(this, mCamera);
@@ -60,6 +73,15 @@ public class CameraActivity extends Activity {
                 mCamera.takePicture(null, null, mPicture);
             }
         });
+
+        //Barcode detector
+        detector = new BarcodeDetector.Builder(getApplicationContext())
+                        .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
+                        .build();
+        if (!detector.isOperational()) {
+            tv_hello.setText("Could not set up the detector!");
+            return;
+        }
 
     }
 
@@ -82,23 +104,11 @@ public class CameraActivity extends Activity {
         public void onPictureTaken(byte[] data, Camera camera) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
             mImageView.setImageBitmap(bitmap);
-            //Bitmap bitmap = new Bitmap(data);
-
-//            File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-//            if (pictureFile == null) {
-//                Log.d(TAG, "Error creating media file, check storage permissions: ");
-//                return;
-//            }
-//
-//            try {
-//                FileOutputStream fos = new FileOutputStream(pictureFile);
-//                fos.write(data);
-//                fos.close();
-//            } catch (FileNotFoundException e) {
-//                Log.d(TAG, "File not found: " + e.getMessage());
-//            } catch (IOException e) {
-//                Log.d(TAG, "Error accessing file: " + e.getMessage());
-//            }
+            mImageView.setRotation(90);
+//            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+//            SparseArray<Barcode> barcodes = detector.detect(frame);
+//            Barcode thisCode = barcodes.valueAt(0);
+//            tv_hello.setText(thisCode.rawValue);
         }
     };
 

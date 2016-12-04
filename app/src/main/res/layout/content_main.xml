@@ -17,7 +17,11 @@
         android:id="@+id/tv_Hello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Hello World!"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/et_test"
+        android:paddingLeft="25dp"/>
 
     <EditText
         android:id="@+id/et_test"
